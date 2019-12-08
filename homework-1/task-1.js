@@ -1,4 +1,4 @@
-const { Transform } = require('stream');
+import { Transform } from 'stream';
 
 class Reverse extends Transform {
   constructor() {
