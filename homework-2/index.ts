@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { NextFunction, Response, Request } from 'express';
 import { v4 } from 'uuid';
+import Joi from '@hapi/joi';
 
 const app = express();
-
 app.use(express.json());
 
+/* Type declaration and validation schema for User */
 type User = {
   id: string;
   login: string;
@@ -14,7 +15,23 @@ type User = {
 };
 const users: Array<User> = [];
 
-app.post('/users', (req, res) => {
+const userSchema = Joi.object({
+  login: Joi.string().required(),
+  password: Joi.string().required().alphanum(),
+  age: Joi.number().required().min(4).max(130),
+});
+type UserSchema = typeof userSchema;
+
+const userValidator = (schema: UserSchema) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error } = schema.validate(req.body);
+
+    error?.isJoi ? res.status(400).json(error.message) : next();
+  }
+}
+
+/* CRUD operations for Users */
+app.post('/users', userValidator(userSchema), (req, res) => {
   const user = req.body as User;
 
   user.id = v4();
@@ -49,7 +66,7 @@ app.get('/users/:id', (req, res) => {
   res.send(user);
 });
 
-app.put('/users/:id', (req, res) => {
+app.put('/users/:id', userValidator(userSchema), (req, res) => {
   const id = req.params.id;
   const { login, password, age } = req.body as User;
 
