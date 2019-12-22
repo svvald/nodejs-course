@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "ES2015",
+    "noImplicitAny": true,
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
