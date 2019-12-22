@@ -47,7 +47,7 @@ app.get('/users', (req, res) => {
   const { loginSubstring = '', limit = 10 } = req.query;
 
   const list = users
-    .filter(user => user.login.includes(loginSubstring))
+    .filter(user => user.login.includes(loginSubstring) && !user.isDeleted)
     .sort((a, b) => a.login.localeCompare(b.login))
     .slice(0, limit);
 
