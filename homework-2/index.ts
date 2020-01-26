@@ -38,9 +38,9 @@ app.post('/users', userValidator(userSchema), (req, res) => {
   user.isDeleted = false;
 
   users.push(user);
-  console.info(users);
 
-  res.send(user);
+  res.setHeader('Location', `/users/${user.id}`);
+  res.status(201).send(user);
 });
 
 app.get('/users', (req, res) => {
@@ -92,7 +92,7 @@ app.delete('/users/:id', (req, res) => {
   } else {
     user.isDeleted = true;
 
-    res.send(user);
+    res.status(204).send();
   }
 });
 
