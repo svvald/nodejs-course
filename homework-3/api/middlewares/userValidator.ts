@@ -15,6 +15,6 @@ const userValidator = (schema: Joi.ObjectSchema<IUser>) => {
 
     error?.isJoi ? res.status(400).json(error.message) : next();
   }
-}
+};
 
 export default userValidator(userSchema);
