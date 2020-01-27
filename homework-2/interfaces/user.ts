@@ -5,6 +5,6 @@ export interface IUserInputDTO {
 };
 
 export interface IUser extends IUserInputDTO {
-  id: string;
+  id: number;
   isDeleted: boolean;
 };

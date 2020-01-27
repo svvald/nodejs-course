@@ -1,21 +1,40 @@
-import { Container } from 'typedi';
-import { Sequelize, DataTypes } from 'sequelize';
+import { Sequelize, DataTypes, Model } from 'sequelize';
 
-import Constants from '../constants';
+export class UserModel extends Model {
+  public id!: number;
+  public login!: string;
+  public password!: string;
+  public age!: number;
+  public isDeleted!: boolean | null;
+}
 
-export default async function () {
-  const sequelize = Container.get(Constants.DI_TOKENS.SEQUELIZE) as Sequelize;
-
-  const UserModel = sequelize.define('userModel', {
+export default async function (sequelize: Sequelize) {
+  UserModel.init({
     id: {
       type: DataTypes.NUMBER,
       primaryKey: true,
+      autoIncrement: true,
     },
-    login: DataTypes.TEXT,
-    password: DataTypes.TEXT,
-    age: DataTypes.NUMBER,
-    isDeleted: DataTypes.BOOLEAN
+    login: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    age: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+    },
+    isDeleted: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
+  }, {
+    sequelize,
+    timestamps: false,
+    tableName: 'users',
   });
-
-  Container.set('userModel', UserModel);
 }
