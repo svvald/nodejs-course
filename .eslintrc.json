@@ -41,7 +41,7 @@
         // Possible errors
         "comma-dangle": [
             2,
-            "never"
+            "only-multiline"
         ],
         "no-cond-assign": [
             2,
@@ -219,7 +219,7 @@
         ],
         "indent": [
             2,
-            4,
+            2,
             {
                 "SwitchCase": 1
             }
@@ -231,8 +231,7 @@
             4,
             {
                 "ignoreUrls": true,
-                "ignoreComments": false,
-                "ignorePattern": "^\\s*(const|let|var)\\s+\\w+\\s+\\=\\s+\\/.*\\/(|i|g|m|ig|im|gm|igm);?$"
+                "ignoreComments": false
             }
         ],
         "max-nested-callbacks": [

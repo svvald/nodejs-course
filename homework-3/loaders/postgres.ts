@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 
 import config from '../config';
 
-export default async function() {
+export default async function (): Promise<Sequelize | unknown> {
   const sequelizeInstance = new Sequelize({
     host: config.database.host,
     port: config.database.port,
@@ -16,6 +16,6 @@ export default async function() {
     await sequelizeInstance.authenticate();
     return sequelizeInstance;
   } catch (error) {
-    console.error(`Unable to connect to the database: ${error}`);
+    throw new Error(`Unable to connect to the database: ${error}`);
   }
 }

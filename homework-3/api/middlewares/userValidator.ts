@@ -10,11 +10,15 @@ const userSchema = Joi.object({
 });
 
 const userValidator = (schema: Joi.ObjectSchema<IUser>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const { error } = schema.validate(req.body);
 
-    error?.isJoi ? res.status(400).json(error.message) : next();
-  }
+    if (error?.isJoi) {
+      res.status(400).json(error.message);
+    } else {
+      return next();
+    }
+  };
 };
 
 export default userValidator(userSchema);

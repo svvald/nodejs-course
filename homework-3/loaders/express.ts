@@ -2,7 +2,7 @@ import express from 'express';
 
 import routes from '../api';
 
-export default async function(app: express.Application) {
+export default function (app: express.Application): void {
   app.use(express.json());
-  app.use(routes());
-};
+  app.use('/users', routes.userRouter);
+}

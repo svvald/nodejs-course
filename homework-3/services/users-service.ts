@@ -1,35 +1,33 @@
-import {Service} from 'typedi';
-import {Op} from 'sequelize';
+import { Service } from 'typedi';
+import { Op } from 'sequelize';
 
-import {UserModel} from '../models/user';
-import {IUserInputDTO} from '../interfaces/user';
+import { UserModel } from '../models/user';
+import { IUser, IUserInputDTO } from '../interfaces/user';
 
 @Service()
 export class UserService {
-  constructor() {}
-
-  async createUser(data: IUserInputDTO) {
+  createUser(data: IUserInputDTO): Promise<IUser> {
     const { login, password, age } = data;
-    return UserModel.create({login, password, age});
+    return UserModel.create({ login, password, age });
   }
 
-  async getUsersList(loginSubstring: string, limit: number) {
+  getUsersList(loginSubstring: string, limit: number): Promise<Array<IUser>> {
     return UserModel.findAll({
       where: {
         login: {
           [Op.iLike]: `%${loginSubstring}%`,
-        }
+        },
       },
       order: ['login'],
       limit,
     });
   }
 
-  async getUserById(id: number) {
+  getUserById(id: number): Promise<IUser> {
     return UserModel.findByPk(id);
   }
 
-  async deleteUserById(id: number) {
+  deleteUserById(id: number): Promise<[number, IUser]> {
     return UserModel.update({
       isDeleted: true,
     }, {
@@ -40,7 +38,7 @@ export class UserService {
     });
   }
 
-  async updateUserById(id: number, data: IUserInputDTO) {
+  updateUserById(id: number, data: IUserInputDTO): Promise<[number, IUser]> {
     const { login, password, age } = data;
     return UserModel.update({
       login, password, age,

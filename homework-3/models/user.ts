@@ -8,7 +8,7 @@ export class UserModel extends Model {
   public isDeleted!: boolean | null;
 }
 
-export default async function (sequelize: Sequelize) {
+export default function (sequelize: Sequelize): void {
   UserModel.init({
     id: {
       type: DataTypes.NUMBER,
@@ -31,7 +31,7 @@ export default async function (sequelize: Sequelize) {
     isDeleted: {
       type:DataTypes.BOOLEAN,
       defaultValue: false,
-    }
+    },
   }, {
     sequelize,
     timestamps: false,
