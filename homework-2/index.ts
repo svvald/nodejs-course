@@ -28,7 +28,7 @@ const userValidator = (schema: UserSchema) => {
 
     error?.isJoi ? res.status(400).json(error.message) : next();
   }
-}
+};
 
 /* CRUD operations for Users */
 app.post('/users', userValidator(userSchema), (req, res) => {
