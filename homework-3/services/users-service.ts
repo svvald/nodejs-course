@@ -2,16 +2,16 @@ import { Service } from 'typedi';
 import { Op } from 'sequelize';
 
 import { UserModel } from '../models/user';
-import { IUser, IUserInputDTO } from '../interfaces/user';
+import { User, UserInputDTO } from '../interfaces/user';
 
 @Service()
 export class UserService {
-  createUser(data: IUserInputDTO): Promise<IUser> {
+  createUser(data: UserInputDTO): Promise<User> {
     const { login, password, age } = data;
     return UserModel.create({ login, password, age });
   }
 
-  getUsersList(loginSubstring: string, limit: number): Promise<Array<IUser>> {
+  getUsersList(loginSubstring: string, limit: number): Promise<Array<User>> {
     return UserModel.findAll({
       where: {
         login: {
@@ -23,11 +23,11 @@ export class UserService {
     });
   }
 
-  getUserById(id: number): Promise<IUser> {
+  getUserById(id: number): Promise<User> {
     return UserModel.findByPk(id);
   }
 
-  deleteUserById(id: number): Promise<[number, IUser]> {
+  deleteUserById(id: number): Promise<[number, User]> {
     return UserModel.update({
       isDeleted: true,
     }, {
@@ -38,7 +38,7 @@ export class UserService {
     });
   }
 
-  updateUserById(id: number, data: IUserInputDTO): Promise<[number, IUser]> {
+  updateUserById(id: number, data: UserInputDTO): Promise<[number, User]> {
     const { login, password, age } = data;
     return UserModel.update({
       login, password, age,

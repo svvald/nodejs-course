@@ -1,11 +1,12 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
+import { User } from '../interfaces/user';
 
-export class UserModel extends Model {
+export class UserModel extends Model implements User {
   public id!: number;
   public login!: string;
   public password!: string;
   public age!: number;
-  public isDeleted!: boolean | null;
+  public isDeleted!: boolean;
 }
 
 export default function (sequelize: Sequelize): void {

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { Container } from 'typedi';
 
 import middlewares from '../middlewares';
-import { IUserInputDTO } from '../../interfaces/user';
+import { UserInputDTO } from '../../interfaces/user';
 import { UserService } from '../../services/users-service';
 
 const router = Router();
@@ -10,7 +10,7 @@ const userService = Container.get(UserService);
 
 /* CRUD operations for Users */
 router.post('/', middlewares.userValidator, async (req, res) => {
-  const data = req.body as IUserInputDTO;
+  const data = req.body as UserInputDTO;
 
   const user = await userService.createUser(data);
 
@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', middlewares.userValidator, async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const data = req.body as IUserInputDTO;
+  const data = req.body as UserInputDTO;
 
   const affectedRows = await userService.updateUserById(id, data);
 
