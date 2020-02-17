@@ -42,13 +42,12 @@ router.put('/:id', middlewares.userValidator, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   const data = req.body as UserInputDTO;
 
-  const affectedRows = await userService.updateUserById(id, data);
+  const user = await userService.updateUserById(id, data);
 
-  if (affectedRows[0] === 0) {
+  if (!user) {
     res.status(404).send('User does not exist');
   } else {
-    const updatedUser = affectedRows[1].dataValues;
-    res.send(updatedUser);
+    res.send(user);
   }
 });
 
@@ -57,7 +56,7 @@ router.delete('/:id', async (req, res) => {
 
   const affectedRows = await userService.deleteUserById(id);
 
-  if (affectedRows[0] === 0) {
+  if (!affectedRows[0]) {
     res.status(404).send('User does not exist');
   } else {
     res.status(204).send();

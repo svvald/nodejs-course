@@ -27,7 +27,7 @@ export class UserService {
     return UserModel.findByPk(id);
   }
 
-  deleteUserById(id: number): Promise<[number, User]> {
+  deleteUserById(id: number): Promise<[number, number]> {
     return UserModel.update({
       isDeleted: true,
     }, {
@@ -38,16 +38,21 @@ export class UserService {
     });
   }
 
-  updateUserById(id: number, data: UserInputDTO): Promise<[number, User]> {
+  async updateUserById(id: number, data: UserInputDTO): Promise<User | undefined> {
     const { login, password, age } = data;
-    return UserModel.update({
-      login, password, age,
-    }, {
-      where: {
-        id,
-        isDeleted: false,
-      },
-      returning: true,
-    });
+
+    const user = await UserModel.findByPk(id);
+
+    if (!user) {
+      return;
+    }
+
+    user.login = login;
+    user.password = password;
+    user.age = age;
+
+    await user.save();
+
+    return user;
   }
 }
