@@ -2,7 +2,7 @@ import { Container } from 'typedi';
 import { Router } from 'express';
 
 import middlewares from '../middlewares';
-import { GroupsService } from '../../services/groups-service';
+import { GroupsService } from '../../services/group.service';
 
 const router = Router();
 const groupService = Container.get(GroupsService);
@@ -50,12 +50,25 @@ router.put('/:id', middlewares.groupValidator, async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  const affectedRows = await groupService.deleteGroupById(id);
+  const deleted = await groupService.deleteGroupById(id);
 
-  if (!affectedRows) {
+  if (!deleted) {
     res.status(404).send('Group does not exist');
   } else {
     res.status(204).send();
+  }
+});
+
+router.post('/:id/addUsers', middlewares.userGroupValidator, async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const data = req.body;
+
+  const users = await groupService.addUsersToGroup(id, data);
+
+  if (!users) {
+    res.status(404).send('Group does not exist');
+  } else {
+    res.status(201).send();
   }
 });
 

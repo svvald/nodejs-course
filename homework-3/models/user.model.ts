@@ -1,5 +1,7 @@
-import { Sequelize, DataTypes, Model } from 'sequelize';
-import { User } from '../interfaces/user';
+import { DataTypes, Model } from 'sequelize';
+
+import { User } from '../interfaces/user.interface';
+import sequelize from '../loaders/postgres';
 
 export class UserModel extends Model implements User {
   public id!: number;
@@ -9,7 +11,7 @@ export class UserModel extends Model implements User {
   public isDeleted!: boolean;
 }
 
-export default function (sequelize: Sequelize): void {
+export default function (): void {
   UserModel.init({
     id: {
       type: DataTypes.NUMBER,
@@ -35,7 +37,6 @@ export default function (sequelize: Sequelize): void {
     },
   }, {
     sequelize,
-    timestamps: false,
-    tableName: 'users',
+    tableName: 'Users',
   });
 }

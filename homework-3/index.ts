@@ -5,13 +5,13 @@ import express from 'express';
 import initLoaders from './loaders';
 import config from './config';
 
-async function startServer() {
+async function startServer(): Promise<void> {
   const app = express();
 
   await initLoaders(app);
 
-  app.listen(config.port, () => {
-    console.log(`Server is ready and listening on port ${config.port}`);
+  app.listen(config.app.port, () => {
+    console.log(`Server is ready and listening on port ${config.app.port}`);
   });
 }
 

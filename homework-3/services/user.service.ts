@@ -1,8 +1,8 @@
 import { Service } from 'typedi';
 import { Op } from 'sequelize';
 
-import { UserModel } from '../models/user';
-import { User, UserInputDTO } from '../interfaces/user';
+import { UserModel } from '../models/user.model';
+import { User, UserInputDTO } from '../interfaces/user.interface';
 
 @Service()
 export class UserService {
@@ -11,7 +11,7 @@ export class UserService {
     return UserModel.create({ login, password, age });
   }
 
-  getUsersList(loginSubstring: string, limit: number): Promise<Array<User>> {
+  getUsersList(loginSubstring: string, limit: number): Promise<User[]> {
     return UserModel.findAll({
       where: {
         login: {
@@ -27,7 +27,7 @@ export class UserService {
     return UserModel.findByPk(id);
   }
 
-  deleteUserById(id: number): Promise<[number, number]> {
+  deleteUserById(id: number): Promise<number> {
     return UserModel.update({
       isDeleted: true,
     }, {
@@ -35,7 +35,7 @@ export class UserService {
         id,
         isDeleted: false,
       },
-    });
+    }).then(([numberOfUsers]: number[]) => numberOfUsers);
   }
 
   async updateUserById(id: number, data: UserInputDTO): Promise<User | undefined> {

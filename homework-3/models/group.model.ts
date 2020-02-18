@@ -1,6 +1,7 @@
-import { Model, Sequelize, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 
-import { Permission, Group } from '../interfaces/group';
+import { Permission, Group } from '../interfaces/group.interface';
+import sequelize from '../loaders/postgres';
 
 export class GroupModel extends Model implements Group {
   public id!: number;
@@ -8,7 +9,7 @@ export class GroupModel extends Model implements Group {
   public permissions!: Array<Permission>;
 }
 
-export default function (sequelize: Sequelize): void {
+export default function (): void {
   GroupModel.init({
     id: {
       type: DataTypes.NUMBER,
@@ -26,7 +27,6 @@ export default function (sequelize: Sequelize): void {
     },
   }, {
     sequelize,
-    timestamps: false,
-    tableName: 'groups',
+    tableName: 'Groups',
   });
 }

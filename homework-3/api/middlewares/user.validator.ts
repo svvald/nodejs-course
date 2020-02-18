@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
-import { User } from '../../interfaces/user';
+import { User } from '../../interfaces/user.interface';
 
 const userSchema = Joi.object({
   login: Joi.string().required(),

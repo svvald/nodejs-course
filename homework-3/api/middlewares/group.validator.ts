@@ -1,16 +1,16 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
-import { Group } from '../../interfaces/group';
+import { Group, Permission } from '../../interfaces/group.interface';
 
 const groupSchema = Joi.object({
   name: Joi.string().required(),
   permissions: Joi.array().unique().min(1).max(5).items(
-    Joi.string().valid('READ'),
-    Joi.string().valid('WRITE'),
-    Joi.string().valid('DELETE'),
-    Joi.string().valid('SHARE'),
-    Joi.string().valid('UPLOAD_FILES'),
+    Joi.string().valid(Permission.READ),
+    Joi.string().valid(Permission.WRITE),
+    Joi.string().valid(Permission.DELETE),
+    Joi.string().valid(Permission.SHARE),
+    Joi.string().valid(Permission.UPLOAD_FILES),
   ).required(),
 });
 

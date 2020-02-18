@@ -2,13 +2,12 @@ import { Router } from 'express';
 import { Container } from 'typedi';
 
 import middlewares from '../middlewares';
-import { UserInputDTO } from '../../interfaces/user';
-import { UserService } from '../../services/users-service';
+import { UserInputDTO } from '../../interfaces/user.interface';
+import { UserService } from '../../services/user.service';
 
 const router = Router();
 const userService = Container.get(UserService);
 
-/* CRUD operations for Users */
 router.post('/', middlewares.userValidator, async (req, res) => {
   const data = req.body as UserInputDTO;
 
@@ -54,9 +53,9 @@ router.put('/:id', middlewares.userValidator, async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  const affectedRows = await userService.deleteUserById(id);
+  const deleted = await userService.deleteUserById(id);
 
-  if (!affectedRows[0]) {
+  if (!deleted) {
     res.status(404).send('User does not exist');
   } else {
     res.status(204).send();
