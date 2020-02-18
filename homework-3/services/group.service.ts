@@ -44,20 +44,12 @@ export class GroupsService {
     const transaction = await sequelize.transaction();
 
     try {
-      const groups = await Promise.all([
-        GroupModel.destroy({
-          where: {
-            id,
-          },
-          transaction,
-        }),
-        UserGroupModel.destroy({
-          where: {
-            groupId: id,
-          },
-          transaction,
-        }),
-      ]).then(([numberOfGroups]) => numberOfGroups);
+      const groups = await GroupModel.destroy({
+        where: {
+          id,
+        },
+        transaction
+      });
 
       await transaction.commit();
       return groups;
