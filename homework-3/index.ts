@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 
 import initLoaders from './loaders';
-import config from './config';
+import config from './config/environment';
 
 async function startServer(): Promise<void> {
   const app = express();

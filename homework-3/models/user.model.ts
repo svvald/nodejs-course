@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 
 import { User } from '../interfaces/user.interface';
-import sequelize from '../loaders/postgres';
+import sequelize from '../config/database';
 
 export class UserModel extends Model implements User {
   public id!: number;
@@ -14,7 +14,7 @@ export class UserModel extends Model implements User {
 export default function (): void {
   UserModel.init({
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -28,7 +28,7 @@ export default function (): void {
       allowNull: false,
     },
     age: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     isDeleted: {

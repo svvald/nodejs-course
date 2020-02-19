@@ -3,7 +3,7 @@ import { Service } from 'typedi';
 import { GroupInputDTO, Group } from '../interfaces/group.interface';
 import { GroupModel } from '../models/group.model';
 import { UserGroupModel } from '../models/user-group.model';
-import sequelize from '../loaders/postgres';
+import sequelize from '../config/database';
 import { UserModel } from '../models/user.model';
 import { User } from '../interfaces/user.interface';
 import { UserGroupInputDTO } from '../interfaces/user-group.interface';

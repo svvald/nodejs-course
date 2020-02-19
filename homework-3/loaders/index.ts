@@ -1,6 +1,6 @@
 import { Application } from 'express';
 
-import sequelize from './postgres';
+import sequelize from '../config/database';
 import expressLoader from './express';
 import modelsLoader from './models';
 

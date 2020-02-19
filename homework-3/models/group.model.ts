@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { Permission, Group } from '../interfaces/group.interface';
-import sequelize from '../loaders/postgres';
+import sequelize from '../config/database';
 
 export class GroupModel extends Model implements Group {
   public id!: number;
@@ -12,7 +12,7 @@ export class GroupModel extends Model implements Group {
 export default function (): void {
   GroupModel.init({
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },

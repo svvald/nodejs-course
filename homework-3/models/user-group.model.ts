@@ -3,7 +3,7 @@ import { Model, DataTypes } from 'sequelize';
 import { GroupModel } from './group.model';
 import { UserModel } from './user.model';
 import { UserGroup } from '../interfaces/user-group.interface';
-import sequelize from '../loaders/postgres';
+import sequelize from '../config/database';
 
 export class UserGroupModel extends Model implements UserGroup {
   id!: number;
@@ -14,16 +14,16 @@ export class UserGroupModel extends Model implements UserGroup {
 export default function (): void {
   UserGroupModel.init({
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     userId: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     groupId: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   }, {

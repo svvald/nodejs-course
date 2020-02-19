@@ -7,7 +7,9 @@
     "hw1-task1": "nodemon --exec babel-node homework-1/task-1.js",
     "hw1-task2": "nodemon --exec babel-node homework-1/task-2.js",
     "hw2": "nodemon --exec babel-node homework-2/index.ts --extensions \".ts\"",
-    "hw3": "nodemon --exec babel-node homework-3/index.ts --extensions \".ts\""
+    "hw3": "nodemon --exec babel-node homework-3/index.ts --extensions \".ts\"",
+    "db:seed": "babel-node homework-3/scripts/database/seed_db.ts --extensions \".ts\"",
+    "db:clear": "babel-node homework-3/scripts/database/clear_db.ts --extensions \".ts\""
   },
   "repository": {
     "type": "git",
