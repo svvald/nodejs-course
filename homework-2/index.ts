@@ -23,11 +23,14 @@ const userSchema = Joi.object({
 type UserSchema = typeof userSchema;
 
 const userValidator = (schema: UserSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const { error } = schema.validate(req.body);
 
-    error?.isJoi ? res.status(400).json(error.message) : next();
-  }
+    if (error?.isJoi) {
+      res.status(400).json(error.message);
+    }
+    next();
+  };
 };
 
 /* CRUD operations for Users */
@@ -57,40 +60,40 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
   const id = req.params.id;
 
-  let user = users.find(user => user.id === id);
+  const userToFind = users.find(user => user.id === id);
 
-  if (!user) {
+  if (!userToFind) {
     res.status(404).send('User not found');
   }
 
-  res.send(user);
+  res.send(userToFind);
 });
 
 app.put('/users/:id', userValidator(userSchema), (req, res) => {
   const id = req.params.id;
   const { login, password, age } = req.body as User;
 
-  let user = users.find(user => user.id === id);
+  const userToUpdate = users.find(u => u.id === id);
 
-  if (!user) {
+  if (!userToUpdate) {
     res.status(404).send('User is not found');
   } else {
-    user.login = login;
-    user.password = password;
-    user.age = age;
+    userToUpdate.login = login;
+    userToUpdate.password = password;
+    userToUpdate.age = age;
 
-    res.send(user);
+    res.send(userToUpdate);
   }
 });
 
 app.delete('/users/:id', (req, res) => {
   const id = req.params.id;
-  let user = users.find(user => user.id === id);
+  const userToDelete = users.find(user => user.id === id);
 
-  if (!user || user.isDeleted) {
+  if (!userToDelete || userToDelete.isDeleted) {
     res.status(404).send('User is not found');
   } else {
-    user.isDeleted = true;
+    userToDelete.isDeleted = true;
 
     res.status(204).send();
   }
