@@ -5,6 +5,6 @@ export interface UserInputDTO {
 }
 
 export interface User extends UserInputDTO {
-  id: number;
+  id: string;
   isDeleted: boolean;
 }

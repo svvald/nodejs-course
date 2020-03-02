@@ -1,4 +1,5 @@
 import { Service } from 'typedi';
+import { v4 as uuidv4 } from 'uuid';
 
 import { GroupInputDTO, Group } from '../interfaces/group.interface';
 import { GroupModel } from '../models/group.model';
@@ -12,18 +13,19 @@ import { UserGroupInputDTO } from '../interfaces/user-group.interface';
 export class GroupsService {
   createGroup(data: GroupInputDTO): Promise<Group> {
     const { name, permissions } = data;
-    return GroupModel.create({ name, permissions });
+    const id = uuidv4();
+    return GroupModel.create({ id, name, permissions });
   }
 
   getGroups(): Promise<Group[]> {
     return GroupModel.findAll();
   }
 
-  getGroupById(id: number): Promise<Group> {
+  getGroupById(id: string): Promise<Group> {
     return GroupModel.findByPk(id);
   }
 
-  async updateGroupById(id: number, data: GroupInputDTO): Promise<Group | undefined> {
+  async updateGroupById(id: string, data: GroupInputDTO): Promise<Group | undefined> {
     const { name, permissions } = data;
 
     const group = await GroupModel.findByPk(id);
@@ -40,7 +42,7 @@ export class GroupsService {
     return group;
   }
 
-  async deleteGroupById(id: number): Promise<number | undefined> {
+  async deleteGroupById(id: string): Promise<number | undefined> {
     const transaction = await sequelize.transaction();
 
     try {
@@ -58,7 +60,7 @@ export class GroupsService {
     }
   }
 
-  async addUsersToGroup(groupId: number, data: UserGroupInputDTO): Promise<User[] | undefined> {
+  async addUsersToGroup(groupId: string, data: UserGroupInputDTO): Promise<User[] | undefined> {
     const { userIds } = data;
 
     const transaction = await sequelize.transaction();
@@ -78,9 +80,11 @@ export class GroupsService {
         transaction,
       });
 
+      const relationId = uuidv4();
       const usersGroups = await UserGroupModel.bulkCreate(
         users.map((user: User) => {
           return {
+            id: relationId,
             userId: user.id,
             groupId: group.id,
           };
@@ -91,6 +95,7 @@ export class GroupsService {
       await transaction.commit();
       return usersGroups;
     } catch (error) {
+      console.log(error);
       await transaction.rollback();
     }
   }

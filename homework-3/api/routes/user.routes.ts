@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
   const user = await userService.getUserById(id);
 
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', middlewares.userValidator, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
   const data = req.body as UserInputDTO;
 
   const user = await userService.updateUserById(id, data);
@@ -51,7 +51,7 @@ router.put('/:id', middlewares.userValidator, async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
   const deleted = await userService.deleteUserById(id);
 

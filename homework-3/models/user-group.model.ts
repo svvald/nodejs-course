@@ -6,24 +6,24 @@ import { UserGroup } from '../interfaces/user-group.interface';
 import sequelize from '../config/database';
 
 export class UserGroupModel extends Model implements UserGroup {
-  id!: number;
-  userId!: number;
-  groupId!: number;
+  id!: string;
+  userId!: string;
+  groupId!: string;
 }
 
 export default function (): void {
   UserGroupModel.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      unique: true,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     groupId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
   }, {

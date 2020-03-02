@@ -4,7 +4,7 @@ import { User } from '../interfaces/user.interface';
 import sequelize from '../config/database';
 
 export class UserModel extends Model implements User {
-  public id!: number;
+  public id!: string;
   public login!: string;
   public password!: string;
   public age!: number;
@@ -14,14 +14,13 @@ export class UserModel extends Model implements User {
 export default function (): void {
   UserModel.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      unique: true,
     },
     login: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.TEXT,

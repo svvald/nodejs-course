@@ -38,7 +38,7 @@ The resulted __txt__ file will be placed in `homework-1` folder named as `data.t
 Write a simple __REST__ service with __CRUD__ operations for User entity.
 - To create __REST__ service, use __ExpressJS__ (https://expressjs.com/).
 - The User should have the following properties:
-  - `id: number`
+  - `id: string`
   - `login: string`
   - `password: string`
   - `age: number`
@@ -83,7 +83,7 @@ The service should adhere to 3-layer architecture principles (https://softwareon
 ## Homework 4
 Add Group entity to already existing __REST__ service with __CRUD__ operations.
 - TheGroup entity should have the following properties:
-  - `id: number`
+  - `id: string`
   - `name: string`
   - `permissions: Array<Permissions>`
 
@@ -140,4 +140,4 @@ The body required for __create__ and __update__ requests:
 
 The body required for __addUsers__ request:
 
-`{ userIds: Array<number> }`
+`{ userIds: Array<string> }`

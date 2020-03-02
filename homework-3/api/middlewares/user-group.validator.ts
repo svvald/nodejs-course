@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UserGroupInputDTO } from '../../interfaces/user-group.interface';
 
 const userGroupSchema = Joi.object({
-  userIds: Joi.array().unique().items(Joi.number()).required(),
+  userIds: Joi.array().unique().items(Joi.string()).required(),
 });
 
 const userGroupValidator = (schema: Joi.ObjectSchema<UserGroupInputDTO>) => {

@@ -12,5 +12,5 @@ export interface GroupInputDTO {
 }
 
 export interface Group extends GroupInputDTO {
-  id: number;
+  id: string;
 }

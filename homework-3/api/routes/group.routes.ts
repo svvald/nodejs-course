@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
   const group = await groupService.getGroupById(id);
 
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', middlewares.groupValidator, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
   const data = req.body;
 
   const group = await groupService.updateGroupById(id, data);
@@ -48,7 +48,7 @@ router.put('/:id', middlewares.groupValidator, async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
   const deleted = await groupService.deleteGroupById(id);
 
@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.post('/:id/addUsers', middlewares.userGroupValidator, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
   const data = req.body;
 
   const users = await groupService.addUsersToGroup(id, data);

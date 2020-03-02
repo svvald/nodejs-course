@@ -4,7 +4,7 @@ import { Permission, Group } from '../interfaces/group.interface';
 import sequelize from '../config/database';
 
 export class GroupModel extends Model implements Group {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public permissions!: Array<Permission>;
 }
@@ -12,14 +12,13 @@ export class GroupModel extends Model implements Group {
 export default function (): void {
   GroupModel.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      unique: true,
     },
     name: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
     },
     permissions: {
       type: DataTypes.ARRAY(DataTypes.TEXT),

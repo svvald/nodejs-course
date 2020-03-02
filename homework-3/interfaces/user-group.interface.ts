@@ -1,9 +1,9 @@
 export interface UserGroupInputDTO {
-  userIds: number[];
+  userIds: string[];
 }
 
 export interface UserGroup {
-  id: number;
-  groupId: number;
-  userId: number;
+  id: string;
+  groupId: string;
+  userId: string;
 }
