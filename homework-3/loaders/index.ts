@@ -4,6 +4,8 @@ import sequelize from '../config/database';
 import expressLoader from './express';
 import modelsLoader from './models';
 
+import { genericErrorLogger } from '../api/middlewares/loggers/generic-error.logger';
+
 export default async function (app: Application): Promise<void> {
   try {
     await sequelize.authenticate();
@@ -13,4 +15,15 @@ export default async function (app: Application): Promise<void> {
 
   modelsLoader();
   expressLoader(app);
+
+
+  process.on('uncaughtException', error => {
+    const message = `${error.name} ${error.message}, ${error.stack}`;
+    genericErrorLogger.error(message);
+  });
+
+  process.on('unhandledRejection', () => {
+    const message = 'Unhandled rejection was detected within the application';
+    genericErrorLogger.error(message);
+  });
 }

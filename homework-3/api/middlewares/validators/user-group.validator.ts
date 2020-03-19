@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
-import { UserGroupInputDTO } from '../../interfaces/user-group.interface';
+import { UserGroupInputDTO } from '../../../interfaces/user-group.interface';
 
 const userGroupSchema = Joi.object({
   userIds: Joi.array().unique().items(Joi.string()).required(),

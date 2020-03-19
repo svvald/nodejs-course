@@ -50,6 +50,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.3",
     "typedi": "^0.8.0",
-    "uuid": "^7.0.1"
+    "uuid": "^7.0.1",
+    "winston": "^3.2.1"
   }
 }

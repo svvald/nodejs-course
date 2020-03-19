@@ -141,3 +141,20 @@ The body required for __create__ and __update__ requests:
 The body required for __addUsers__ request:
 
 `{ userIds: Array<string> }`
+
+## Homework 5
+
+Add express __middleware__ which will log which service method has been invoked and which arguments have been passed to it.
+
+Add express __middleware__ which will log all unhandled errors and return a standard message with __HTTP__ code `500` (__Internal Server Error__).
+
+Add error handling to `process.on(‘uncaughtException’,...)`.
+
+Add __Unhandled promise rejection__ listener to log errors.
+
+Every method in the controllers should log the errors which should include the following information:
+- method name
+- arguments which have been passed to the method
+- error message
+
+Add middleware wrapper functions (or decorators) which will track the methods’ execution time

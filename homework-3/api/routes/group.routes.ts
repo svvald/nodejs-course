@@ -1,13 +1,15 @@
 import { Container } from 'typedi';
 import { Router } from 'express';
 
-import middlewares from '../middlewares';
+import groupValidator from '../middlewares/validators/group.validator';
+import userGroupValidator from '../middlewares/validators/user-group.validator';
+
 import { GroupsService } from '../../services/group.service';
 
 const router = Router();
 const groupService = Container.get(GroupsService);
 
-router.post('/', middlewares.groupValidator, async (req, res) => {
+router.post('/', groupValidator, async (req, res) => {
   const data = req.body;
 
   const group = await groupService.createGroup(data);
@@ -18,7 +20,6 @@ router.post('/', middlewares.groupValidator, async (req, res) => {
 
 router.get('/', async (req, res) => {
   const groups = await groupService.getGroups();
-
   res.send(groups);
 });
 
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', middlewares.groupValidator, async (req, res) => {
+router.put('/:id', groupValidator, async (req, res) => {
   const id = req.params.id;
   const data = req.body;
 
@@ -59,7 +60,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.post('/:id/addUsers', middlewares.userGroupValidator, async (req, res) => {
+router.post('/:id/addUsers', userGroupValidator, async (req, res) => {
   const id = req.params.id;
   const data = req.body;
 

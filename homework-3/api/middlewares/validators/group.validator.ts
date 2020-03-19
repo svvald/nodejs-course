@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
-import { Group, Permission } from '../../interfaces/group.interface';
+import { Group, Permission } from '../../../interfaces/group.interface';
 
 const groupSchema = Joi.object({
   name: Joi.string().required(),

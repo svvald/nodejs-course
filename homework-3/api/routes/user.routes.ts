@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import { Container } from 'typedi';
 
-import middlewares from '../middlewares';
+import userValidator from '../middlewares/validators/user.validator';
+
 import { UserInputDTO } from '../../interfaces/user.interface';
 import { UserService } from '../../services/user.service';
 
 const router = Router();
 const userService = Container.get(UserService);
 
-router.post('/', middlewares.userValidator, async (req, res) => {
+router.post('/', userValidator, async (req, res) => {
   const data = req.body as UserInputDTO;
 
   const user = await userService.createUser(data);
@@ -37,7 +38,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', middlewares.userValidator, async (req, res) => {
+router.put('/:id', userValidator, async (req, res) => {
   const id = req.params.id;
   const data = req.body as UserInputDTO;
 
