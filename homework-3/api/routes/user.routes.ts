@@ -1,66 +1,19 @@
 import { Router } from 'express';
-import { Container } from 'typedi';
 
 import userValidator from '../middlewares/validators/user.validator';
 
-import { UserInputDTO } from '../../interfaces/user.interface';
-import { UserService } from '../../services/user.service';
+import { UserController } from '../../controllers/user.controller';
 
 const router = Router();
-const userService = Container.get(UserService);
 
-router.post('/', userValidator, async (req, res) => {
-  const data = req.body as UserInputDTO;
+router.post('/', userValidator, UserController.createUser);
 
-  const user = await userService.createUser(data);
+router.get('/', UserController.getUsersList);
 
-  res.setHeader('Location', `${req.path}/${user.id}`);
-  res.status(201).send(user);
-});
+router.get('/:id', UserController.getUserById);
 
-router.get('/', async (req, res) => {
-  const { loginSubstring = '', limit = 10 } = req.query;
+router.put('/:id', userValidator, UserController.updateUserById);
 
-  const list = await userService.getUsersList(loginSubstring, limit);
-
-  res.send(list);
-});
-
-router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-
-  const user = await userService.getUserById(id);
-
-  if (!user) {
-    res.status(404).send('User does not exist');
-  } else {
-    res.send(user);
-  }
-});
-
-router.put('/:id', userValidator, async (req, res) => {
-  const id = req.params.id;
-  const data = req.body as UserInputDTO;
-
-  const user = await userService.updateUserById(id, data);
-
-  if (!user) {
-    res.status(404).send('User does not exist');
-  } else {
-    res.send(user);
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  const id = req.params.id;
-
-  const deleted = await userService.deleteUserById(id);
-
-  if (!deleted) {
-    res.status(404).send('User does not exist');
-  } else {
-    res.status(204).send();
-  }
-});
+router.delete('/:id', UserController.deleteUserById);
 
 export default router;
