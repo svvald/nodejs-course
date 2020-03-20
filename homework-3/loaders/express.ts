@@ -1,6 +1,7 @@
 import express from 'express';
 
 import routes from '../api';
+
 import { apiMethodLoggingMiddleware } from '../api/middlewares/loggers/api-method.logger';
 import { genericErrorMiddleware } from '../api/middlewares/generic-error.middleware';
 

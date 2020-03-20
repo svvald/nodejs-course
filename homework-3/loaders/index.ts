@@ -16,7 +16,6 @@ export default async function (app: Application): Promise<void> {
   modelsLoader();
   expressLoader(app);
 
-
   process.on('uncaughtException', error => {
     const message = `${error.name} ${error.message}, ${error.stack}`;
     genericErrorLogger.error(message);

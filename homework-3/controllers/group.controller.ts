@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { GroupService } from '../services/group.service';
+import { ControllerLogger } from '../api/middlewares/loggers/controller.logger';
 
 export class GroupController {
+  @ControllerLogger()
   public static async createGroup(req: Request, res: Response, next: NextFunction): Promise<void> {
     const data = req.body;
 
@@ -16,6 +18,7 @@ export class GroupController {
     }
   }
 
+  @ControllerLogger()
   public static async getGroups(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const groups = await GroupService.getGroups();
@@ -25,6 +28,7 @@ export class GroupController {
     }
   }
 
+  @ControllerLogger()
   public static async getGroupById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id = req.params.id;
 
@@ -41,6 +45,7 @@ export class GroupController {
     }
   }
 
+  @ControllerLogger()
   public static async updateGroupById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id = req.params.id;
     const data = req.body;
@@ -58,6 +63,7 @@ export class GroupController {
     }
   }
 
+  @ControllerLogger()
   public static async deleteGroupById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id = req.params.id;
 
@@ -74,6 +80,7 @@ export class GroupController {
     }
   }
 
+  @ControllerLogger()
   public static async addUsersToGroup(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id = req.params.id;
     const data = req.body;
