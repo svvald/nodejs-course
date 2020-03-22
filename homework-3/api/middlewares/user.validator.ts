@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
-import { IUser } from '../../interfaces/user';
+import { User } from '../../interfaces/user.interface';
 
 const userSchema = Joi.object({
   login: Joi.string().required(),
@@ -9,7 +9,7 @@ const userSchema = Joi.object({
   age: Joi.number().required().min(4).max(130),
 });
 
-const userValidator = (schema: Joi.ObjectSchema<IUser>) => {
+const userValidator = (schema: Joi.ObjectSchema<User>) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const { error } = schema.validate(req.body);
 

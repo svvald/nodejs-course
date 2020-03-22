@@ -1,31 +1,33 @@
-import { Sequelize, DataTypes, Model } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
-export class UserModel extends Model {
-  public id!: number;
+import { User } from '../interfaces/user.interface';
+import sequelize from '../config/database';
+
+export class UserModel extends Model implements User {
+  public id!: string;
   public login!: string;
   public password!: string;
   public age!: number;
-  public isDeleted!: boolean | null;
+  public isDeleted!: boolean;
 }
 
-export default function (sequelize: Sequelize): void {
+export default function (): void {
   UserModel.init({
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      unique: true,
     },
     login: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
     age: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     isDeleted: {
@@ -34,7 +36,6 @@ export default function (sequelize: Sequelize): void {
     },
   }, {
     sequelize,
-    timestamps: false,
-    tableName: 'users',
+    tableName: 'Users',
   });
 }

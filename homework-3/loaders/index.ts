@@ -1,12 +1,16 @@
 import { Application } from 'express';
-import { Sequelize } from 'sequelize';
 
-import postgresLoader from './postgres';
+import sequelize from '../config/database';
 import expressLoader from './express';
 import modelsLoader from './models';
 
 export default async function (app: Application): Promise<void> {
-  const sequelizeInstance = await postgresLoader() as Sequelize;
-  await modelsLoader(sequelizeInstance);
+  try {
+    await sequelize.authenticate();
+  } catch (error) {
+    throw new Error(`Unable to connect to the database: ${error}`);
+  }
+
+  modelsLoader();
   expressLoader(app);
 }

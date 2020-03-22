@@ -2,15 +2,14 @@ import { Router } from 'express';
 import { Container } from 'typedi';
 
 import middlewares from '../middlewares';
-import { IUserInputDTO } from '../../interfaces/user';
-import { UserService } from '../../services/users-service';
+import { UserInputDTO } from '../../interfaces/user.interface';
+import { UserService } from '../../services/user.service';
 
 const router = Router();
 const userService = Container.get(UserService);
 
-/* CRUD operations for Users */
 router.post('/', middlewares.userValidator, async (req, res) => {
-  const data = req.body as IUserInputDTO;
+  const data = req.body as UserInputDTO;
 
   const user = await userService.createUser(data);
 
@@ -27,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
   const user = await userService.getUserById(id);
 
@@ -39,25 +38,24 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', middlewares.userValidator, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const data = req.body as IUserInputDTO;
+  const id = req.params.id;
+  const data = req.body as UserInputDTO;
 
-  const affectedRows = await userService.updateUserById(id, data);
+  const user = await userService.updateUserById(id, data);
 
-  if (affectedRows[0] === 0) {
+  if (!user) {
     res.status(404).send('User does not exist');
   } else {
-    const updatedUser = affectedRows[1].dataValues;
-    res.send(updatedUser);
+    res.send(user);
   }
 });
 
 router.delete('/:id', async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
-  const affectedRows = await userService.deleteUserById(id);
+  const deleted = await userService.deleteUserById(id);
 
-  if (affectedRows[0] === 0) {
+  if (!deleted) {
     res.status(404).send('User does not exist');
   } else {
     res.status(204).send();

@@ -6,9 +6,11 @@ if (env.error) {
 }
 
 export default {
-  port: parseInt(process.env.PORT as string, 10),
+  app: {
+    port: parseInt(process.env.APP_PORT as string, 10),
+  },
 
-  database: {
+  db: {
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT as string, 10),
     name: process.env.DB_NAME,

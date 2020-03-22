@@ -1,7 +1,9 @@
-import { Sequelize } from 'sequelize';
+import initUserModel from '../models/user.model';
+import initGroupModel from '../models/group.model';
+import initUserGroupModel from '../models/user-group.model';
 
-import initUserModel from '../models/user';
-
-export default async function (sequelize: Sequelize) {
-  await initUserModel(sequelize);
+export default function (): void {
+  initUserModel();
+  initGroupModel();
+  initUserGroupModel();
 }
