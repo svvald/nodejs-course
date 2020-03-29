@@ -72,6 +72,12 @@
         "use-isnan": 2,
         "valid-typeof": 2,
         "no-unexpected-multiline": 0,
+        "@typescript-eslint/unbound-method": [
+            "error",
+            {
+              "ignoreStatic": true
+            }
+        ],
         // Best Practices
         "block-scoped-var": 2,
         "complexity": [

@@ -1,15 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 
-import { User } from '../interfaces/user.interface';
 import sequelize from '../config/database';
 
-export class UserModel extends Model implements User {
-  public id!: string;
-  public login!: string;
-  public password!: string;
-  public age!: number;
-  public isDeleted!: boolean;
-}
+export class UserModel extends Model {}
 
 export default function (): void {
   UserModel.init({

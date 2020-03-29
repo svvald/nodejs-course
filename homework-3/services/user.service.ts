@@ -1,60 +1,81 @@
-import { Service } from 'typedi';
 import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
 import { UserModel } from '../models/user.model';
 import { User, UserInputDTO } from '../interfaces/user.interface';
 
-@Service()
 export class UserService {
-  createUser(data: UserInputDTO): Promise<User> {
+  public static createUser(data: UserInputDTO): Promise<User> {
     const { login, password, age } = data;
     const id = uuidv4();
-    return UserModel.create({ id, login, password, age });
+
+    try {
+      return UserModel.create({ id, login, password, age });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  getUsersList(loginSubstring: string, limit: number): Promise<User[]> {
-    return UserModel.findAll({
-      where: {
-        login: {
-          [Op.iLike]: `%${loginSubstring}%`,
+  public static getUsersList(loginSubstring: string, limit: number): Promise<User[]> {
+    try {
+      return UserModel.findAll({
+        where: {
+          login: {
+            [Op.iLike]: `%${loginSubstring}%`,
+          },
         },
-      },
-      order: ['login'],
-      limit,
-    });
+        order: ['login'],
+        limit,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  getUserById(id: string): Promise<User> {
-    return UserModel.findByPk(id);
+  public static getUserById(id: string): Promise<User> {
+    try {
+      return UserModel.findByPk(id);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  deleteUserById(id: string): Promise<number> {
-    return UserModel.update({
-      isDeleted: true,
-    }, {
-      where: {
-        id,
-        isDeleted: false,
-      },
-    }).then(([numberOfUsers]: number[]) => numberOfUsers);
+  public static async deleteUserById(id: string): Promise<number> {
+    try {
+      const [numberOfUpdatedRows] = await UserModel.update({
+        isDeleted: true,
+      }, {
+        where: {
+          id,
+          isDeleted: false,
+        },
+      });
+
+      return numberOfUpdatedRows;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  async updateUserById(id: string, data: UserInputDTO): Promise<User | undefined> {
+  public static async updateUserById(id: string, data: UserInputDTO): Promise<User | undefined> {
     const { login, password, age } = data;
 
-    const user = await UserModel.findByPk(id);
+    try {
+      const user = await UserModel.findByPk(id);
 
-    if (!user) {
-      return;
+      if (!user) {
+        return;
+      }
+
+      user.login = login;
+      user.password = password;
+      user.age = age;
+
+      await user.save();
+
+      return user;
+    } catch (error) {
+      throw new Error(error);
     }
-
-    user.login = login;
-    user.password = password;
-    user.age = age;
-
-    await user.save();
-
-    return user;
   }
 }

@@ -1,4 +1,3 @@
-import { Service } from 'typedi';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GroupInputDTO, Group } from '../interfaces/group.interface';
@@ -9,40 +8,56 @@ import { UserModel } from '../models/user.model';
 import { User } from '../interfaces/user.interface';
 import { UserGroupInputDTO } from '../interfaces/user-group.interface';
 
-@Service()
-export class GroupsService {
-  createGroup(data: GroupInputDTO): Promise<Group> {
+export class GroupService {
+  public static createGroup(data: GroupInputDTO): Promise<Group> {
     const { name, permissions } = data;
     const id = uuidv4();
-    return GroupModel.create({ id, name, permissions });
+
+    try {
+      return GroupModel.create({ id, name, permissions });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  getGroups(): Promise<Group[]> {
-    return GroupModel.findAll();
+  public static getGroups(): Promise<Group[]> {
+    try {
+      return GroupModel.findAll();
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  getGroupById(id: string): Promise<Group> {
-    return GroupModel.findByPk(id);
+  public static getGroupById(id: string): Promise<Group> {
+    try {
+      return GroupModel.findByPk(id);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  async updateGroupById(id: string, data: GroupInputDTO): Promise<Group | undefined> {
+  public static async updateGroupById(id: string, data: GroupInputDTO): Promise<Group | undefined> {
     const { name, permissions } = data;
 
-    const group = await GroupModel.findByPk(id);
+    try {
+      const group = await GroupModel.findByPk(id);
 
-    if (!group) {
-      return;
+      if (!group) {
+        return;
+      }
+
+      group.name = name;
+      group.permissions = permissions;
+
+      await group.save();
+
+      return group;
+    } catch (error) {
+      throw new Error(error);
     }
-
-    group.name = name;
-    group.permissions = permissions;
-
-    await group.save();
-
-    return group;
   }
 
-  async deleteGroupById(id: string): Promise<number | undefined> {
+  public static async deleteGroupById(id: string): Promise<number | undefined> {
     const transaction = await sequelize.transaction();
 
     try {
@@ -57,10 +72,11 @@ export class GroupsService {
       return groups;
     } catch (error) {
       await transaction.rollback();
+      throw new Error(error);
     }
   }
 
-  async addUsersToGroup(groupId: string, data: UserGroupInputDTO): Promise<User[] | undefined> {
+  public static async addUsersToGroup(groupId: string, data: UserGroupInputDTO): Promise<User[] | undefined> {
     const { userIds } = data;
 
     const transaction = await sequelize.transaction();
@@ -95,8 +111,8 @@ export class GroupsService {
       await transaction.commit();
       return usersGroups;
     } catch (error) {
-      console.log(error);
       await transaction.rollback();
+      throw new Error(error);
     }
   }
 }
