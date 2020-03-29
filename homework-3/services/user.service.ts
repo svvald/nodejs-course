@@ -40,6 +40,19 @@ export class UserService {
     }
   }
 
+  public static getUserByCredentials(login: string, password: string): Promise<User> {
+    try {
+      return UserModel.findOne({
+        where: {
+          login,
+          password,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   public static async deleteUserById(id: string): Promise<number> {
     try {
       const [numberOfUpdatedRows] = await UserModel.update({

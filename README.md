@@ -158,3 +158,17 @@ Every method in the controllers should log the errors which should include the f
 - error message
 
 Add middleware wrapper functions (or decorators) which will track the methods’ execution time
+
+## Homework 6
+
+Add authorization to the already existing __REST__ service:
+- Add `login(username, password)` method which should return __JWT__ token.
+- Add a middleware which will proxy all the requests (except __login__) and check that __HTTP Authorization__ header has the correct value of __JWT__ token.
+- In case of the __HTTP Authorization__ header is absent in the request, the middleware should stop further controller method execution and return __HTTP__ `401` code (__Unauthorized Error__) and standard error message.
+- In case of __HTTP Authorization__ header has invalid JWTtoken in the request, the middleware should return __HTTP__ code `403` (__Forbidden Error__) and standard error message.
+
+Add __CORS middleware__ to access service methods from WEB applications hosted on another domains (https://github.com/expressjs/cors).
+
+__JWT secret__
+
+An additional entry __JWT_SECRET__ should be added to the `.env` file prior to launching the service. Otherwise, a random number converted to string will be used as a JWT secret.
