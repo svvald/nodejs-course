@@ -58,19 +58,44 @@ describe('GIVEN UserController', () => {
   });
 
   describe('INVOKING [GET] /users', () => {
-    it('SHOULD return status 200 with users list in body if successful', async (done: jest.DoneCallback) => {
-      const getUsersListSpy = spyOn(
-        UserService,
-        'getUsersList',
-      ).and.returnValue(mockUsers);
+    describe('WHEN no query params have been passed', () => {
+      it('SHOULD use default query params and return status 200 with users list in body if successful', async (done: jest.DoneCallback) => {
+        const defaultLoginSubstring = '';
+        const defaultLimit = 10;
 
-      const result: request.Response = await request(app)
-        .get('/users');
+        const getUsersListSpy = spyOn(
+          UserService,
+          'getUsersList',
+        ).and.returnValue(mockUsers);
 
-      expect(getUsersListSpy).toHaveBeenCalled();
-      expect(result.status).toBe(200);
-      expect(result.body).toEqual(mockUsers);
-      done();
+        const result: request.Response = await request(app)
+          .get('/users');
+
+        expect(getUsersListSpy).toHaveBeenCalledWith(defaultLoginSubstring, defaultLimit);
+        expect(result.status).toBe(200);
+        expect(result.body).toEqual(mockUsers);
+        done();
+      });
+    });
+
+    describe('WHEN query params have been passed', () => {
+      it('SHOULD return status 200 with users list in body if successful', async (done: jest.DoneCallback) => {
+        const loginSubstring = 'login';
+        const limit = '5';
+
+        const getUsersListSpy = spyOn(
+          UserService,
+          'getUsersList',
+        ).and.returnValue(mockUsers);
+
+        const result: request.Response = await request(app)
+          .get(`/users?loginSubstring=${loginSubstring}&limit=${limit}`);
+
+        expect(getUsersListSpy).toHaveBeenCalledWith(loginSubstring, limit);
+        expect(result.status).toBe(200);
+        expect(result.body).toEqual(mockUsers);
+        done();
+      });
     });
 
     it('SHOULD return status 500 with error in body if there is an error within the service', async (done: jest.DoneCallback) => {
@@ -112,8 +137,7 @@ describe('GIVEN UserController', () => {
       ).and.returnValue(undefined);
 
       const result: request.Response = await request(app)
-        .get('/users/1')
-        .set('Authorization', 'Test token');
+        .get('/users/1');
 
       expect(getUserByIdSpy).toHaveBeenCalledWith('1');
       expect(result.status).toBe(404);
@@ -237,13 +261,6 @@ describe('GIVEN UserController', () => {
   });
 
   describe('INVOKING [DELETE] /users/:id', () => {
-    let userData: UserInputDTO;
-
-    beforeEach(() => {
-      const { login, password, age } = mockUsers[0];
-      userData = { login, password, age };
-    });
-
     it('SHOULD return status 204 if successful', async (done: jest.DoneCallback) => {
       const deleteUserByIdSpy = spyOn(
         UserService,
@@ -251,8 +268,7 @@ describe('GIVEN UserController', () => {
       ).and.returnValue(1);
 
       const result: request.Response = await request(app)
-        .delete('/users/1')
-        .send(userData);
+        .delete('/users/1');
 
       expect(deleteUserByIdSpy).toHaveBeenCalledWith('1');
       expect(result.status).toBe(204);
@@ -266,8 +282,7 @@ describe('GIVEN UserController', () => {
       ).and.returnValue(0);
 
       const result: request.Response = await request(app)
-        .delete('/users/1')
-        .send(userData);
+        .delete('/users/1');
 
       expect(deleteUserByIdSpy).toHaveBeenCalledWith('1');
       expect(result.status).toBe(404);
@@ -282,8 +297,7 @@ describe('GIVEN UserController', () => {
       ).and.throwError('An error occured');
 
       const result: request.Response = await request(app)
-        .delete('/users/1')
-        .send(userData);
+        .delete('/users/1');
 
       expect(deleteUserByIdSpy).toHaveBeenCalledWith('1');
       expect(result.status).toBe(500);

@@ -11,7 +11,7 @@ export class GroupController {
     try {
       const group = await GroupService.createGroup(data);
 
-      res.setHeader('Location', `${req.path}/${group.id}`);
+      res.setHeader('Location', `${req.baseUrl}/${group.id}`);
       res.status(201).send(group);
     } catch (error) {
       return next(error);
@@ -36,7 +36,7 @@ export class GroupController {
       const group = await GroupService.getGroupById(id);
 
       if (!group) {
-        res.status(404).send('Group does not exist');
+        res.status(404).send({ 'error': 'Group does not exist' });
       } else {
         res.send(group);
       }
@@ -54,7 +54,7 @@ export class GroupController {
       const group = await GroupService.updateGroupById(id, data);
 
       if (!group) {
-        res.status(404).send('Group does not exist');
+        res.status(404).send({ 'error': 'Group does not exist' });
       } else {
         res.send(group);
       }
@@ -71,7 +71,7 @@ export class GroupController {
       const deleted = await GroupService.deleteGroupById(id);
 
       if (!deleted) {
-        res.status(404).send('Group does not exist');
+        res.status(404).send({ 'error': 'Group does not exist' });
       } else {
         res.status(204).send();
       }
@@ -89,7 +89,7 @@ export class GroupController {
       const users = await GroupService.addUsersToGroup(id, data);
 
       if (!users) {
-        res.status(404).send('Group does not exist');
+        res.status(404).send({ 'error': 'Group does not exist' });
       } else {
         res.status(201).send();
       }
