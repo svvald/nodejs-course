@@ -7,16 +7,18 @@ import { apiMethodLoggingMiddleware } from '../api/middlewares/loggers/api-metho
 import { genericErrorMiddleware } from '../api/middlewares/generic-error.middleware';
 import { jwtMiddleware } from '../api/middlewares/jwt.middleware';
 
-export default function (app: express.Application): void {
-  app.use(cors());
-  app.use(express.json());
+const app = express();
 
-  app.use(apiMethodLoggingMiddleware);
-  app.use(jwtMiddleware);
+app.use(cors());
+app.use(express.json());
 
-  app.use('/', routes.authRouter);
-  app.use('/users', routes.userRouter);
-  app.use('/groups', routes.groupRouter);
+app.use(apiMethodLoggingMiddleware);
+app.use(jwtMiddleware);
 
-  app.use(genericErrorMiddleware);
-}
+app.use('/', routes.authRouter);
+app.use('/users', routes.userRouter);
+app.use('/groups', routes.groupRouter);
+
+app.use(genericErrorMiddleware);
+
+export default app;

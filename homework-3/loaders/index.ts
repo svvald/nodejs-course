@@ -1,12 +1,9 @@
-import { Application } from 'express';
-
 import sequelize from '../config/database';
-import expressLoader from './express';
 import modelsLoader from './models';
 
 import { genericErrorLogger } from '../api/middlewares/loggers/generic-error.logger';
 
-export default async function (app: Application): Promise<void> {
+export default async function (): Promise<void> {
   try {
     await sequelize.authenticate();
   } catch (error) {
@@ -14,7 +11,6 @@ export default async function (app: Application): Promise<void> {
   }
 
   modelsLoader();
-  expressLoader(app);
 
   process.on('uncaughtException', error => {
     const message = `${error.name} ${error.message}, ${error.stack}`;
