@@ -12,7 +12,7 @@ export class UserController {
     try {
       const user = await UserService.createUser(data);
 
-      res.setHeader('Location', `${req.path}/${user.id}`);
+      res.setHeader('Location', `${req.baseUrl}/${user.id}`);
       res.status(201).send(user);
     } catch (error) {
       return next(error);
@@ -40,7 +40,7 @@ export class UserController {
       const user = await UserService.getUserById(id);
 
       if (!user) {
-        res.status(404).send('User does not exist');
+        res.status(404).json({ 'error': 'User does not exist' });
       } else {
         res.send(user);
       }
@@ -57,10 +57,8 @@ export class UserController {
     try {
       const user = await UserService.updateUserById(id, data);
 
-      console.warn(user);
-
       if (!user) {
-        res.status(404).send('User does not exist');
+        res.status(404).json({ 'error': 'User does not exist' });
       } else {
         res.send(user);
       }
@@ -77,7 +75,7 @@ export class UserController {
       const deleted = await UserService.deleteUserById(id);
 
       if (!deleted) {
-        res.status(404).send('User does not exist');
+        res.status(404).json({ 'error': 'User does not exist' });
       } else {
         res.status(204).send();
       }
